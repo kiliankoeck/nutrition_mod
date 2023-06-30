@@ -1,0 +1,21 @@
+{
+  "name": "protein",
+  "icon": "minecraft:cooked_beef",
+  "color": "fa9e87",
+  "dailyPortionAmt": 1,
+  "foods": {
+    "minecraft:cooked_beef": 306.0,
+    "minecraft:cooked_chicken": 204.0,
+    "minecraft:cooked_salmon": 206.0,
+    "minecraft:cooked_cod": 105.0,
+    "minecraft:cooked_mutton": 309.0,
+    "minecraft:cooked_porkchop": 265.0,
+    "minecraft:cooked_rabbit": 197.0,
+    "minecraft:rabbit_stew": 121.0
+  },
+  "effects": [
+    "",
+    "HEALTH_DOWN",
+    ""
+  ]
+}

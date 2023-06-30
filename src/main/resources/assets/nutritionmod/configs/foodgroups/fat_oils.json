@@ -1,0 +1,13 @@
+{
+  "name": "fat and oils",
+  "icon": "minecraft:torch",
+  "color": "ffffff",
+  "dailyPortionAmt": 0,
+  "foods": {
+  },
+  "effects": [
+    "",
+    "",
+    ""
+  ]
+}

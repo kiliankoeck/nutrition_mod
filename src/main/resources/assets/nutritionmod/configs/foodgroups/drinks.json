@@ -1,0 +1,14 @@
+{
+  "name": "drinks",
+  "icon": "minecraft:water_bucket",
+  "color": "ffffff",
+  "dailyPortionAmt": 6,
+  "foods": {
+    "minecraft:potion": 0.0
+  },
+  "effects": [
+    "HEALTH_DOWN",
+    "",
+    ""
+  ]
+}

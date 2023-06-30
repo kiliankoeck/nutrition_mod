@@ -1,0 +1,21 @@
+{
+  "name": "vegetables and fruit",
+  "icon": "minecraft:carrot",
+  "color": "ace364",
+  "dailyPortionAmt": 5,
+  "foods": {
+    "minecraft:sweet_berries": 1.0,
+    "minecraft:beetroot": 43.0,
+    "minecraft:beetroot_soup": 43.0,
+    "minecraft:carrot": 40.0,
+    "minecraft:mushroom_stew": 56.0,
+    "minecraft:apple": 52.0,
+    "minecraft:melon_slice": 30.0,
+    "minecraft:dried_kelp": 200.0
+  },
+  "effects": [
+    "",
+    "",
+    "HEALTH_UP"
+  ]
+}

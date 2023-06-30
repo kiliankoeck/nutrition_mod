@@ -1,0 +1,19 @@
+{
+  "name": "extras",
+  "icon": "minecraft:cookie",
+  "color": "e791ff",
+  "dailyPortionAmt": 1,
+  "foods": {
+    "minecraft:cake": 323 ,
+    "minecraft:honey_bottle" : 314,
+    "minecraft:cookie":  487,
+    "minecraft:pumpkin_pie": 210
+  },
+  "effects": [
+    "",
+    "HEALTH_DOWN",
+    ""
+  ]
+}
+
+

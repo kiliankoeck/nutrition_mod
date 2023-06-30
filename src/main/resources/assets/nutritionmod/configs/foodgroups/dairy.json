@@ -1,0 +1,14 @@
+{
+  "name": "dairy",
+  "icon": "minecraft:milk_bucket",
+  "color": "ffffff",
+  "dailyPortionAmt": 3,
+  "foods": {
+    "minecraft:milk_bucket": 60.0
+  },
+  "effects": [
+    "",
+    "",
+    ""
+  ]
+}
