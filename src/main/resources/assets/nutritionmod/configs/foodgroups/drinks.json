@@ -3,6 +3,8 @@
   "icon": "minecraft:water_bucket",
   "color": "ffffff",
   "dailyPortionAmt": 6,
+  "dailyPortionBoundary": "LOWER",
+
   "foods": {
     "minecraft:potion": 0.0
   },

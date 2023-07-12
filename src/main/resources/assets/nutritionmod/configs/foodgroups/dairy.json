@@ -3,6 +3,7 @@
   "icon": "minecraft:milk_bucket",
   "color": "ffffff",
   "dailyPortionAmt": 3,
+  "dailyPortionBoundary": "EQUAL",
   "foods": {
     "minecraft:milk_bucket": 60.0
   },

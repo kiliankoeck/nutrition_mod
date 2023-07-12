@@ -1,5 +1,6 @@
 package net.koeck.nutritionmod.utility;
 
+import net.koeck.nutritionmod.diet.Boundary;
 import net.koeck.nutritionmod.diet.DietEffect.DietEffectType;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroup;
 import net.koeck.nutritionmod.diet.foodgroups.JsonFoodGroup;
@@ -60,6 +61,12 @@ public class DataParser {
                         foodGroup.effects[i] = DietEffectType.valueOf(foodGroupRaw.effects[i]);
                     }
                 }
+            }
+
+            if (foodGroupRaw.dailyPortionBoundary != null) {
+                foodGroup.dailyPortionBoundary = Boundary.valueOf(foodGroupRaw.dailyPortionBoundary);
+            } else {
+                foodGroup.dailyPortionBoundary = Boundary.EQUAL;
             }
 
             foodGroups.add(foodGroup);

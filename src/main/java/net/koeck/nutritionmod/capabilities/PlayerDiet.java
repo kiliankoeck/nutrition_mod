@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//TODO: maybe refactor name
 public class PlayerDiet{
 
     private Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
@@ -77,6 +76,10 @@ public class PlayerDiet{
     public void setFoodGroup(Map<FoodGroup, Integer> foodgroupData) {
         for (Map.Entry<FoodGroup, Integer> entry : foodgroupData.entrySet())
             consumedFoodGroups.put(entry.getKey(), entry.getValue());
+    }
+
+    public Map<FoodGroup, Integer> getConsumedFoodGroups() {
+        return consumedFoodGroups;
     }
 
     public Double getConsumedCalories() {

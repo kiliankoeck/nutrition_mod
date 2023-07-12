@@ -12,27 +12,23 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
 import net.minecraftforge.fml.loading.FMLConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 
 import java.io.File;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(NutritionMod.MOD_ID)
-public class NutritionMod
-{
+public class NutritionMod {
     public static final String MOD_ID = "nutritionmod";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public NutritionMod()
-    {
+    public NutritionMod() {
+
         Config.registerConfigs(new File(FMLConfig.defaultConfigPath()));
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
 
         modEventBus.addListener(this::commonSetup);
 
@@ -40,7 +36,7 @@ public class NutritionMod
 
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)  {
+    private void commonSetup(final FMLCommonSetupEvent event) {
 
         ModMessages.register();
 
@@ -54,14 +50,10 @@ public class NutritionMod
     }
 
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
+    public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-
+        public static void onClientSetup(FMLClientSetupEvent event) {
         }
     }
 }

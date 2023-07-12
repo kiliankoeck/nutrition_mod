@@ -3,6 +3,7 @@
   "icon": "minecraft:wheat",
   "color": "fad587",
   "dailyPortionAmt": 4,
+  "dailyPortionBoundary": "EQUAL",
   "foods": {
     "minecraft:baked_potato": 93.0 ,
     "minecraft:bread": 245

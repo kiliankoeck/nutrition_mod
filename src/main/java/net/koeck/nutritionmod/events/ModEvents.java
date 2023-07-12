@@ -3,10 +3,12 @@ package net.koeck.nutritionmod.events;
 import net.koeck.nutritionmod.NutritionMod;
 import net.koeck.nutritionmod.capabilities.PlayerDiet;
 import net.koeck.nutritionmod.capabilities.PlayerDietProvider;
+import net.koeck.nutritionmod.client.ClientDietData;
 import net.koeck.nutritionmod.diet.DietEffect;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroup;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroupList;
 import net.koeck.nutritionmod.networking.ModMessages;
+import net.koeck.nutritionmod.networking.NetworkingUtils;
 import net.koeck.nutritionmod.networking.packet.CalorieDataSyncS2CPacket;
 import net.koeck.nutritionmod.networking.packet.DairyDataSyncS2CPacket;
 import net.koeck.nutritionmod.networking.packet.DrinksDataSyncS2CPacket;
@@ -16,6 +18,7 @@ import net.koeck.nutritionmod.networking.packet.GrainDataSyncS2CPacket;
 import net.koeck.nutritionmod.networking.packet.ProteinDataSyncS2CPacket;
 import net.koeck.nutritionmod.networking.packet.VegetablesFruitDataSyncS2CPacket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -33,6 +36,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.List;
 
@@ -68,8 +72,9 @@ public class ModEvents {
                 if(event.getEntity() instanceof ServerPlayer player) {
                     player.getCapability(PlayerDietProvider.PLAYER_DIET).ifPresent(diet -> {
                         for (FoodGroup foodGroup : FoodGroupList.get()) {
-                            sendS2CPackage(foodGroup, diet.getFoodGroup(foodGroup), (ServerPlayer) event.getEntity());
+                            NetworkingUtils.sendS2CPackage(foodGroup, diet.getFoodGroup(foodGroup), (ServerPlayer) event.getEntity());
                         }
+                        ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(diet.getConsumedCalories()), (ServerPlayer) event.getEntity());
                     });
                 }
             }
@@ -129,11 +134,16 @@ public class ModEvents {
                         double bmi = playerDiet.addBodyWeightFromCalories();
                         DietEffect.applyDietEffects(playerDiet.getFoodGroup(), event.player, bmi);
                         playerDiet.reset();
+                        for (FoodGroup foodGroup: playerDiet.getConsumedFoodGroups().keySet()) {
+                            NetworkingUtils.sendS2CPackage(foodGroup, 0, (ServerPlayer) event.player);
+                        }
+                        ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(0), (ServerPlayer) event.player);
                     });
                 }
             }
         }
 
+        //TODO: milk shouldnt remove effects
         @SubscribeEvent
         public static void OnEndEatFood(LivingEntityUseItemEvent.Finish event) {
             if (!(event.getEntity() instanceof Player) || event.getEntity().level.isClientSide()) {
@@ -149,48 +159,16 @@ public class ModEvents {
                 ItemStack item = event.getItem();
                 List<FoodGroup> foodGroupList = FoodGroupList.getConsumedFoodGroups(item);
                 double calories = FoodGroupList.getFoodCalories(item);
-                System.out.println(calories);
                 playerDiet.addFoodGroup(foodGroupList, 1);
                 playerDiet.addConsumedCalories(calories);
-                System.out.println(playerDiet);
 
                 for (FoodGroup foodGroup : foodGroupList) {
-                    sendS2CPackage(foodGroup, playerDiet.getFoodGroup(foodGroup), (ServerPlayer) player);
+                    NetworkingUtils.sendS2CPackage(foodGroup, playerDiet.getFoodGroup(foodGroup), (ServerPlayer) player);
                     ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(playerDiet.getConsumedCalories()), (ServerPlayer) player);
                 }
             });
-
-            //TODO: add calories
         }
 
-        private static void sendS2CPackage(FoodGroup foodGroup, int value, ServerPlayer player) {
-            switch (foodGroup.name) {
-                case "dairy":
-                    ModMessages.sendToPlayer(new DairyDataSyncS2CPacket(value), player);
-                    break;
-                case "drinks":
-                    ModMessages.sendToPlayer(new DrinksDataSyncS2CPacket(value), player);
-                    break;
-                case "extras":
-                    ModMessages.sendToPlayer(new ExtrasDataSyncS2CPacket(value), player);
-                    break;
-                case "fat and oils":
-                    ModMessages.sendToPlayer(new FatOilDataSyncS2CPacket(value), player);
-                    break;
-                case "grain":
-                    ModMessages.sendToPlayer(new GrainDataSyncS2CPacket(value), player);
-                    break;
-                case "protein":
-                    ModMessages.sendToPlayer(new ProteinDataSyncS2CPacket(value), player);
-                    break;
-                case "vegetables and fruit":
-                    ModMessages.sendToPlayer(new VegetablesFruitDataSyncS2CPacket(value), player);
-                    break;
-                default:
-                    //TODO: default
-                    System.out.println("Food Group non existent");
-                    break;
-            }
-        }
+
     }
 }

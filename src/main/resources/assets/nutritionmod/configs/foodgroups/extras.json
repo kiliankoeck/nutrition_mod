@@ -3,6 +3,7 @@
   "icon": "minecraft:cookie",
   "color": "e791ff",
   "dailyPortionAmt": 1,
+  "dailyPortionBoundary": "UPPER",
   "foods": {
     "minecraft:cake": 323 ,
     "minecraft:honey_bottle" : 314,

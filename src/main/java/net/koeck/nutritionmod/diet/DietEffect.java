@@ -18,14 +18,11 @@ import java.util.Objects;
 
 public class DietEffect {
 
-
-
     public enum DietEffectType {
         HEALTH_UP,
         HEALTH_DOWN
     }
 
-    //TODO: rename
     public static void applyDietEffects(Map<FoodGroup, Integer> foodGroupIntake, Player player, double bmi) {
         double slowDownCoefficient = 0;
         if (bmi >= 40 ) {
@@ -41,13 +38,15 @@ public class DietEffect {
         Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifiers();
         Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED)).addPermanentModifier(new AttributeModifier("speed_down",  slowDownCoefficient, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-        //TODO: change fat and oil optimal amount
         int optimalAmtReached = 0;
         for (FoodGroup foodGroup : foodGroupIntake.keySet()) {
+
             int intakeValue = checkIntakeAmount(foodGroup, foodGroupIntake.get(foodGroup));
             if (intakeValue == 2) {
                 optimalAmtReached++;
             }
+
+
             matchEffect(foodGroup.effects[intakeValue], player);
         }
 
@@ -62,9 +61,9 @@ public class DietEffect {
     }
 
     private static int checkIntakeAmount(FoodGroup foodGroup, int amount) {
-        if (amount < foodGroup.dailyPortionAmt) {
+        if (amount < foodGroup.dailyPortionAmt && foodGroup.dailyPortionBoundary != Boundary.UPPER) {
             return 0;
-        } else if (amount > foodGroup.dailyPortionAmt) {
+        } else if (amount > foodGroup.dailyPortionAmt && foodGroup.dailyPortionBoundary != Boundary.LOWER) {
             return 1;
         } else {
             return 2;
@@ -85,7 +84,7 @@ public class DietEffect {
         double random = Math.random();
         player.sendSystemMessage(Component.literal(String.valueOf(random)));
         if(random <= 0.8 && player.getMaxHealth() < 30) {
-            Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_up",  2.0D, AttributeModifier.Operation.ADDITION));
+            Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_up",  0.5D, AttributeModifier.Operation.ADDITION));
             ModMessages.sendToPlayer(new HealthBarSyncS2CPacket(player.getMaxHealth()), (ServerPlayer) player);
         }
     }
@@ -94,7 +93,7 @@ public class DietEffect {
         double random = Math.random();
         player.sendSystemMessage(Component.literal(String.valueOf(random)));
         if(random <= 0.8 && player.getMaxHealth() > 10) {
-            Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_down",  -2.0D, AttributeModifier.Operation.ADDITION));
+            Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_down",  -1.0D, AttributeModifier.Operation.ADDITION));
             ModMessages.sendToPlayer(new HealthBarSyncS2CPacket(player.getMaxHealth()), (ServerPlayer) player);
         }
     }

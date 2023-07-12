@@ -1,5 +1,6 @@
 package net.koeck.nutritionmod.diet.foodgroups;
 
+import net.koeck.nutritionmod.diet.Boundary;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ public class JsonFoodGroup {
     public String icon;
     public String color;
     public int dailyPortionAmt;
+    public String dailyPortionBoundary;
+
     public Map<String, Double> foods = new HashMap<>();
     //effects for underconsumption, overconsumption and adequate consumption
     public String[] effects = new String[3];

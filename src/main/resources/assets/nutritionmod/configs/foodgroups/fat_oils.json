@@ -2,7 +2,8 @@
   "name": "fat and oils",
   "icon": "minecraft:torch",
   "color": "ffffff",
-  "dailyPortionAmt": 0,
+  "dailyPortionAmt": 2,
+  "dailyPortionBoundary": "UPPER",
   "foods": {
   },
   "effects": [
