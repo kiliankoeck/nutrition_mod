@@ -42,7 +42,7 @@ public class DietGui extends Screen {
 
                 if (consumedAmount > dailyPortionAmt && dailyPortionBoundary != Boundary.LOWER) {
                     textColor = Color.RED.getRGB();
-                } else if (consumedAmount == dailyPortionAmt || dailyPortionBoundary == Boundary.UPPER) {
+                } else if (consumedAmount >= dailyPortionAmt || dailyPortionBoundary == Boundary.UPPER) {
                     textColor = Color.GREEN.getRGB();
                 } else {
                     textColor = Color.DARK_GRAY.getRGB();
@@ -61,6 +61,14 @@ public class DietGui extends Screen {
             Double consumedCalories = ClientDietData.getConsumedCalories();
             if(consumedCalories != null) {
                 font.drawShadow(poseStack, String.format("%s: %dkcal", "consumed calories", consumedCalories.intValue() ), 30, y + 6, Color.CYAN.getRGB());
+            }
+            y += 20;
+            Double bodyWeight = ClientDietData.getBodyWeight();
+            if(bodyWeight != null) {
+                font.drawShadow(poseStack, String.format("current weight: %skg", bodyWeight/1000), 30, y + 6, Color.BLUE.getRGB());
+                y+=10;
+                font.drawShadow(poseStack, String.format("current BMI: %s", bodyWeight/(1000 * 1.75 * 1.75) ), 30, y + 6, Color.BLUE.getRGB());
+
             }
         }
     }

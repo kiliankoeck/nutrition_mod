@@ -5,8 +5,8 @@
   "dailyPortionAmt": 4,
   "dailyPortionBoundary": "EQUAL",
   "foods": {
-    "minecraft:baked_potato": 93.0 ,
-    "minecraft:bread": 245
+    "minecraft:baked_potato": [93.0, 173.0] ,
+    "minecraft:bread": [245.0, 38.0]
   },
   "effects": [
     "",

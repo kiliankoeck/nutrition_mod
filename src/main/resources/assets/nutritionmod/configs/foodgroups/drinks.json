@@ -6,7 +6,7 @@
   "dailyPortionBoundary": "LOWER",
 
   "foods": {
-    "minecraft:potion": 0.0
+    "minecraft:potion": [0.0, 250.0]
   },
   "effects": [
     "HEALTH_DOWN",

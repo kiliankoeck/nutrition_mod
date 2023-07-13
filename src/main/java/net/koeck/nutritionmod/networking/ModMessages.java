@@ -1,17 +1,8 @@
 package net.koeck.nutritionmod.networking;
 
 import net.koeck.nutritionmod.NutritionMod;
-import net.koeck.nutritionmod.networking.packet.CalorieDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.DairyDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.DrinksDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.ExampleC2SPacket;
+import net.koeck.nutritionmod.networking.packet.*;
 
-import net.koeck.nutritionmod.networking.packet.ExtrasDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.FatOilDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.GrainDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.HealthBarSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.ProteinDataSyncS2CPacket;
-import net.koeck.nutritionmod.networking.packet.VegetablesFruitDataSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -90,6 +81,12 @@ public class ModMessages {
             .decoder(CalorieDataSyncS2CPacket::new)
             .encoder(CalorieDataSyncS2CPacket::toBytes)
             .consumerMainThread(CalorieDataSyncS2CPacket::handle)
+            .add();
+
+        net.messageBuilder(WeightDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(WeightDataSyncS2CPacket::new)
+            .encoder(WeightDataSyncS2CPacket::toBytes)
+            .consumerMainThread(WeightDataSyncS2CPacket::handle)
             .add();
     }
 

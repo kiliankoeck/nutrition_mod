@@ -16,6 +16,8 @@ public class FoodGroup {
     public int color;
     public int dailyPortionAmt;
     public Boundary dailyPortionBoundary;
-    public Map<ItemStack, Double> foods = new HashMap<>();
+
+    //Double[0] = kcal/100g, Double[1] = g (for simplicity 1ml liquid = 1g)
+    public Map<ItemStack, Double[]> foods = new HashMap<>();
     public DietEffectType[] effects = new DietEffectType[3];
 }

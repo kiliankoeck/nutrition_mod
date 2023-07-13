@@ -1,6 +1,7 @@
 package net.koeck.nutritionmod;
 
 import com.mojang.logging.LogUtils;
+import net.koeck.nutritionmod.effect.ModEffects;
 import net.koeck.nutritionmod.networking.ModMessages;
 import net.koeck.nutritionmod.utility.Config;
 import net.koeck.nutritionmod.utility.DataImporter;
@@ -29,6 +30,7 @@ public class NutritionMod {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModEffects.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -39,7 +41,6 @@ public class NutritionMod {
     private void commonSetup(final FMLCommonSetupEvent event) {
 
         ModMessages.register();
-
         DataImporter.reload();
     }
 

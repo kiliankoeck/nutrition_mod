@@ -11,8 +11,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.Potions;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,17 +49,24 @@ public class DietEffect {
                 optimalAmtReached++;
             }
 
-
             matchEffect(foodGroup.effects[intakeValue], player);
         }
 
         if(optimalAmtReached == FoodGroupList.size()) {
             //Strength
-            player.addEffect(new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(5)), 24000));
+            MobEffectInstance strength = new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(5)), 24000, 0, true, true);
+            strength.setCurativeItems(new ArrayList<ItemStack>());
             //Absorption
-            player.addEffect(new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(22)), 24000));
+            MobEffectInstance absorption = new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(22)), 24000, 0, true, true);
+            absorption.setCurativeItems(new ArrayList<ItemStack>());
             //Haste
-            player.addEffect(new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(3)), 24000));
+            MobEffectInstance haste = new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(3)), 24000, 0, true, true);
+            haste.setCurativeItems(new ArrayList<ItemStack>());
+
+            player.addEffect(strength);
+            player.addEffect(absorption);
+            player.addEffect(haste);
+
         }
     }
 
@@ -82,7 +92,6 @@ public class DietEffect {
 
     private static void applyHealthUp (Player player) {
         double random = Math.random();
-        player.sendSystemMessage(Component.literal(String.valueOf(random)));
         if(random <= 0.8 && player.getMaxHealth() < 30) {
             Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_up",  0.5D, AttributeModifier.Operation.ADDITION));
             ModMessages.sendToPlayer(new HealthBarSyncS2CPacket(player.getMaxHealth()), (ServerPlayer) player);
@@ -91,7 +100,6 @@ public class DietEffect {
 
     private static void applyHealthDown (Player player) {
         double random = Math.random();
-        player.sendSystemMessage(Component.literal(String.valueOf(random)));
         if(random <= 0.8 && player.getMaxHealth() > 10) {
             Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_down",  -1.0D, AttributeModifier.Operation.ADDITION));
             ModMessages.sendToPlayer(new HealthBarSyncS2CPacket(player.getMaxHealth()), (ServerPlayer) player);

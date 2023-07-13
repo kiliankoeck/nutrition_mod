@@ -59,15 +59,32 @@ public class FoodGroupList {
             // Search foods
             for (ItemStack listedFood : foodGroup.foods.keySet()) {// All foods in that category
                 if (listedFood.is(consumedFood.getItem())) {
-                    Double calories = foodGroup.foods.get(listedFood);
-                    if (calories != null) {
-                        return calories;
+                    Double[] info = foodGroup.foods.get(listedFood);
+                    if (info != null && info.length >= 2) {
+                        return (info[0]*info[1])/100;
                     }
                     return 0;
                 }
             }
         }
         return 0;
+    }
+
+    public static Double[] getFoodInfo(ItemStack consumedFood) {
+        // Loop through food groups to look for food
+        for (FoodGroup foodGroup : foodGroups) { // All food groups
+            // Search foods
+            for (ItemStack listedFood : foodGroup.foods.keySet()) {// All foods in that category
+                if (listedFood.is(consumedFood.getItem())) {
+                    Double[] info = foodGroup.foods.get(listedFood);
+                    if (info != null && info.length >= 2) {
+                        return info;
+                    }
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
     public static int size() {

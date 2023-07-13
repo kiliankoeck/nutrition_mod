@@ -13,7 +13,8 @@ public class PlayerDiet{
     private Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
     private Double consumedCalories = 0D;
 
-    private Double bodyWeight = 5800D;
+    //in g
+    private Double bodyWeight = 60000D;
     //TODO: can be individual? Maybe config file
     //in cm
     private final double HEIGHT = 175;
@@ -40,7 +41,7 @@ public class PlayerDiet{
     }
 
     public double addBodyWeightFromCalories() {
-        double caloricDifference = calculateTotalEnergyExpenditure() - consumedCalories;
+        double caloricDifference = consumedCalories - calculateTotalEnergyExpenditure();
         addBodyWeight(Math.max(caloricDifference * WEIGH_GAIN_COEFFICIENT, 0.0));
         return calculateBMI();
     }
@@ -48,14 +49,16 @@ public class PlayerDiet{
     //Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1467-789X.2006.00249.x
     private double calculateTotalEnergyExpenditure () {
         if (IS_MALE) {
-            return 64 - 9.72 * AGE + 1.54 * (14.2 * bodyWeight/1000 + 503 * HEIGHT);
+            System.out.println(64 - 9.72 * AGE + 1.54 * (14.2 * bodyWeight/1000 + 503 * HEIGHT/100));
+            return 64 - 9.72 * AGE + 1.54 * (14.2 * bodyWeight/1000 + 503 * HEIGHT/100);
         } else {
-            return 387 - 7.31 * AGE + 1.45 * (10.9 * bodyWeight/1000 + 660.7 * HEIGHT);
+            return 387 - 7.31 * AGE + 1.45 * (10.9 * bodyWeight/1000 + 660.7 * HEIGHT/100);
         }
     }
 
     private double calculateBMI() {
-        return bodyWeight / (HEIGHT * HEIGHT);
+        //BMI = kg/m^2
+        return 10 * bodyWeight / (HEIGHT * HEIGHT);
     }
     
     public Map<FoodGroup, Integer> getFoodGroup() {

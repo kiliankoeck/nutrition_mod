@@ -8,7 +8,17 @@ import java.util.Map;
 public class ClientDietData {
 
     private static Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
-    private static Double consumedCalories = 0D;
+    private static Double consumedCalories;
+    private static Double bodyWeight;
+
+    public static Double getBodyWeight() {
+        return bodyWeight;
+    }
+
+    public static void setBodyWeight(Double bodyWeight) {
+        ClientDietData.bodyWeight = bodyWeight;
+    }
+
 
     public static void setFoodGroup(FoodGroup foodGroup, int value){
         consumedFoodGroups.put(foodGroup, value);

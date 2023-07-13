@@ -15,8 +15,8 @@ public class JsonFoodGroup {
     public String color;
     public int dailyPortionAmt;
     public String dailyPortionBoundary;
-
-    public Map<String, Double> foods = new HashMap<>();
+    //Double[0] = kcal/100g, Double[1] = g (for simplicity 1ml liquid = 1g)
+    public Map<String, Double[]> foods = new HashMap<>();
     //effects for underconsumption, overconsumption and adequate consumption
     public String[] effects = new String[3];
 }
