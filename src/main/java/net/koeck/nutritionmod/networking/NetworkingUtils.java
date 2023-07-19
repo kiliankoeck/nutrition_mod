@@ -30,8 +30,6 @@ public class NetworkingUtils {
                 ModMessages.sendToPlayer(new VegetablesFruitDataSyncS2CPacket(value), player);
                 break;
             default:
-                //TODO: default
-                System.out.println("Food Group non existent");
                 break;
         }
     }

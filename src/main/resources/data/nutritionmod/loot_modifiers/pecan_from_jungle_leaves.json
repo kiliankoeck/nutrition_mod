@@ -1,0 +1,10 @@
+{
+  "type": "nutritionmod:add_item",
+  "conditions": [
+    {
+      "condition": "block_state_property",
+      "block": "minecraft:jungle_leaves"
+    }
+  ],
+  "item": "nutritionmod:pecan"
+}

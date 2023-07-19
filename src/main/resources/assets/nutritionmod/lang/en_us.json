@@ -1,5 +1,9 @@
 {
   "key.category.nutritionmod.nutrition": "Nutrition Mod",
-  "key.tutorial.open_gui": "Open Diet Menu"
-
+  "key.tutorial.open_gui": "Open Diet Menu",
+  "item.nutritionmod.pecan": "Pecan",
+  "effect.nutritionmod.overweight": "Overweight",
+  "effect.nutritionmod.obesity_one": "Obesity I",
+  "effect.nutritionmod.obesity_two": "Obesity II",
+  "effect.nutritionmod.obesity_three": "Obesity III"
 }

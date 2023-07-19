@@ -2,20 +2,15 @@ package net.koeck.nutritionmod.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.koeck.nutritionmod.capabilities.PlayerDiet;
-import net.koeck.nutritionmod.capabilities.PlayerDietProvider;
 import net.koeck.nutritionmod.client.ClientDietData;
 import net.koeck.nutritionmod.diet.Boundary;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroup;
-import net.koeck.nutritionmod.diet.foodgroups.FoodGroupList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 public class DietGui extends Screen {
@@ -35,7 +30,7 @@ public class DietGui extends Screen {
             int y = 20;
             for (FoodGroup foodGroup : consumedFoodGroups.keySet()) {
                 ItemStack icon = foodGroup.icon;
-                int consumedAmount =  consumedFoodGroups.get(foodGroup);
+                int consumedAmount = consumedFoodGroups.get(foodGroup);
                 int dailyPortionAmt = foodGroup.dailyPortionAmt;
                 Boundary dailyPortionBoundary = foodGroup.dailyPortionBoundary;
                 int textColor;
@@ -59,17 +54,13 @@ public class DietGui extends Screen {
             }
             y += 20;
             Double consumedCalories = ClientDietData.getConsumedCalories();
-            if(consumedCalories != null) {
-                font.drawShadow(poseStack, String.format("%s: %dkcal", "consumed calories", consumedCalories.intValue() ), 30, y + 6, Color.CYAN.getRGB());
+            if (consumedCalories != null) {
+                font.drawShadow(poseStack, String.format("%s: %.2fkcal", "consumed calories", consumedCalories), 30, y + 6, Color.CYAN.getRGB());
             }
             y += 20;
-            Double bodyWeight = ClientDietData.getBodyWeight();
-            if(bodyWeight != null) {
-                font.drawShadow(poseStack, String.format("current weight: %skg", bodyWeight/1000), 30, y + 6, Color.BLUE.getRGB());
-                y+=10;
-                font.drawShadow(poseStack, String.format("current BMI: %s", bodyWeight/(1000 * 1.75 * 1.75) ), 30, y + 6, Color.BLUE.getRGB());
+            int weightClass = ClientDietData.getWeightClass();
+            font.drawShadow(poseStack, String.format("%s: %d", "weight class", weightClass), 30, y + 6, Color.CYAN.getRGB());
 
-            }
         }
     }
 }

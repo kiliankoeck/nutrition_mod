@@ -8,69 +8,63 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerDiet{
+public class PlayerDiet {
 
     private Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
     private Double consumedCalories = 0D;
 
-    //in g
-    private Double bodyWeight = 60000D;
-    //TODO: can be individual? Maybe config file
-    //in cm
-    private final double HEIGHT = 175;
-    private final int AGE = 20;
-    private final boolean IS_MALE = true;
-
-    // calculated by formula 1000g / 7778 (7778 kcal roughly equal 1 kg bodyweight)
-    private final double WEIGH_GAIN_COEFFICIENT = 0.1286;
+    //weight classes 1-12
+    private int weightClass = 0;
 
     public PlayerDiet() {
         updateCapability();
     }
 
-    public Double getBodyWeight() {
-        return bodyWeight;
-    }
-
-    public void setBodyWeight(Double bodyWeight) {
-        this.bodyWeight = bodyWeight;
-    }
-
-    public void addBodyWeight(Double bodyWeight) {
-        this.bodyWeight += bodyWeight;
-    }
-
-    public double addBodyWeightFromCalories() {
-        double caloricDifference = consumedCalories - calculateTotalEnergyExpenditure();
-        addBodyWeight(Math.max(caloricDifference * WEIGH_GAIN_COEFFICIENT, 0.0));
-        return calculateBMI();
-    }
-
-    //Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1467-789X.2006.00249.x
-    private double calculateTotalEnergyExpenditure () {
-        if (IS_MALE) {
-            System.out.println(64 - 9.72 * AGE + 1.54 * (14.2 * bodyWeight/1000 + 503 * HEIGHT/100));
-            return 64 - 9.72 * AGE + 1.54 * (14.2 * bodyWeight/1000 + 503 * HEIGHT/100);
-        } else {
-            return 387 - 7.31 * AGE + 1.45 * (10.9 * bodyWeight/1000 + 660.7 * HEIGHT/100);
+    public void changeWeightClass(int amount) {
+        while (weightClass + amount > 14) {
+            amount--;
         }
+        while (weightClass + amount < 0) {
+            amount++;
+        }
+        weightClass = weightClass + amount;
     }
 
-    private double calculateBMI() {
-        //BMI = kg/m^2
-        return 10 * bodyWeight / (HEIGHT * HEIGHT);
+    public int getWeightClass() {
+        return weightClass;
     }
-    
+
+    public int addWeightClassFromCalories() {
+        int weightEstimate = 61;
+        if (weightClass > 13) {
+            weightEstimate = 122;
+        } else if (weightClass > 10) {
+            weightEstimate = 107;
+        } else if (weightClass > 7) {
+            weightEstimate = 92;
+        } else if (weightClass > 4) {
+            weightEstimate = 77;
+        }
+        //Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1467-789X.2006.00249.x
+        double tee = 64 - 9.72 * 20 + 1.54 * (14.2 * weightEstimate + 503 * 1.75);
+        if (consumedCalories > 1.2 * tee) {
+            changeWeightClass(1);
+        } else if (consumedCalories < 0.8 * tee) {
+            changeWeightClass(-1);
+        }
+        return weightClass;
+    }
+
     public Map<FoodGroup, Integer> getFoodGroup() {
         return consumedFoodGroups;
     }
 
-    
+
     public Integer getFoodGroup(FoodGroup foodgroup) {
         return consumedFoodGroups.get(foodgroup);
     }
 
-    
+
     public void setFoodGroup(FoodGroup foodgroup, Integer value) {
         consumedFoodGroups.put(foodgroup, value);
     }
@@ -102,25 +96,25 @@ public class PlayerDiet{
         consumedFoodGroups.put(foodgroup, currentAmount + amount);
     }
 
-    
+
     public void addFoodGroup(List<FoodGroup> foodgroupData, int amount) {
         for (FoodGroup foodGroup : foodgroupData) {
             addFoodGroup(foodGroup, 1);
         }
     }
-    
+
     public void reset(FoodGroup foodgroup) {
-      setFoodGroup(foodgroup, 0);
+        setFoodGroup(foodgroup, 0);
     }
 
-    
+
     public void reset() {
         consumedCalories = 0D;
         for (FoodGroup foodGroup : consumedFoodGroups.keySet()) {
             reset(foodGroup);
         }
     }
-    
+
     public void updateCapability() {
         Map<FoodGroup, Integer> dietOld = new HashMap<>(consumedFoodGroups);
         consumedFoodGroups.clear();
@@ -136,34 +130,20 @@ public class PlayerDiet{
     }
 
     public void saveNBTData(CompoundTag nbt) {
-        for (FoodGroup foodGroup: FoodGroupList.get()){
+        for (FoodGroup foodGroup : FoodGroupList.get()) {
             nbt.putInt(foodGroup.name, consumedFoodGroups.get(foodGroup));
         }
         nbt.putDouble("calorie_count", consumedCalories);
-        nbt.putDouble("body_weight", bodyWeight);
+        nbt.putInt("weight_class", weightClass);
     }
 
 
     public void loadNBTData(CompoundTag nbt) {
-        for (FoodGroup foodGroup: FoodGroupList.get()){
+        for (FoodGroup foodGroup : FoodGroupList.get()) {
             consumedFoodGroups.put(foodGroup, nbt.getInt(foodGroup.name));
         }
         consumedCalories = nbt.getDouble("calorie_count");
-        bodyWeight = nbt.getDouble("body_weight");
+        weightClass = nbt.getInt("weight_class");
     }
 
-    @Override
-    public String toString() {
-        StringBuilder res = new StringBuilder();
-        for (FoodGroup foodGroup: consumedFoodGroups.keySet()) {
-            res.append(foodGroup.name).append(": ").append(consumedFoodGroups.get(foodGroup)).append("\n");
-        }
-        String calorieString = "\n" + "consumed calories: " + consumedCalories;
-        String weightString = "\n" + "body weight: " + bodyWeight;
-
-        res.append(calorieString);
-        res.append(weightString);
-
-        return res.toString();
-    }
 }

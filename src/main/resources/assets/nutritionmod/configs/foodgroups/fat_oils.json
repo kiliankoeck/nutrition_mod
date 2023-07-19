@@ -1,10 +1,14 @@
 {
   "name": "fat and oils",
-  "icon": "minecraft:torch",
+  "icon": "nutritionmod:pecan",
   "color": "ffffff",
   "dailyPortionAmt": 2,
   "dailyPortionBoundary": "UPPER",
   "foods": {
+    "nutritionmod:pecan": [
+      691.0,
+      30.0
+    ]
   },
   "effects": [
     "",

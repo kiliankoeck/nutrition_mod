@@ -2,11 +2,15 @@ package net.koeck.nutritionmod;
 
 import com.mojang.logging.LogUtils;
 import net.koeck.nutritionmod.effect.ModEffects;
+import net.koeck.nutritionmod.item.ModItems;
+import net.koeck.nutritionmod.loot.ModLootModifiers;
 import net.koeck.nutritionmod.networking.ModMessages;
 import net.koeck.nutritionmod.utility.Config;
 import net.koeck.nutritionmod.utility.DataImporter;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,10 +35,14 @@ public class NutritionMod {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModEffects.register(modEventBus);
+        ModItems.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        modEventBus.addListener(this::addCreative);
 
     }
 
@@ -42,6 +50,12 @@ public class NutritionMod {
 
         ModMessages.register();
         DataImporter.reload();
+    }
+
+    private void addCreative(CreativeModeTabEvent.BuildContents event) {
+        if (event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            event.accept(ModItems.PECAN);
+        }
     }
 
     @SubscribeEvent

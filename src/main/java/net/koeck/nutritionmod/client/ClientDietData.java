@@ -9,18 +9,18 @@ public class ClientDietData {
 
     private static Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
     private static Double consumedCalories;
-    private static Double bodyWeight;
+    private static int weightClass = 1;
 
-    public static Double getBodyWeight() {
-        return bodyWeight;
+    public static int getWeightClass() {
+        return weightClass;
     }
 
-    public static void setBodyWeight(Double bodyWeight) {
-        ClientDietData.bodyWeight = bodyWeight;
+    public static void setWeightClass(int weightClass) {
+        ClientDietData.weightClass = weightClass;
     }
 
 
-    public static void setFoodGroup(FoodGroup foodGroup, int value){
+    public static void setFoodGroup(FoodGroup foodGroup, int value) {
         consumedFoodGroups.put(foodGroup, value);
     }
 

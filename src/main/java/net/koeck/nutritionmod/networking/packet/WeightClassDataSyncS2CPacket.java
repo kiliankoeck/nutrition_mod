@@ -6,26 +6,26 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class WeightDataSyncS2CPacket {
+public class WeightClassDataSyncS2CPacket {
 
-    private final double weightValue;
+    private final int weightClassValue;
 
-    public WeightDataSyncS2CPacket(double weightValue) {
-        this.weightValue = weightValue;
+    public WeightClassDataSyncS2CPacket(int weightClassValue) {
+        this.weightClassValue = weightClassValue;
     }
 
-    public WeightDataSyncS2CPacket(FriendlyByteBuf buf) {
-        weightValue = buf.readDouble();
+    public WeightClassDataSyncS2CPacket(FriendlyByteBuf buf) {
+        weightClassValue = buf.readInt();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeDouble(weightValue);
+        buf.writeInt(weightClassValue);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ClientDietData.setBodyWeight( weightValue);
+            ClientDietData.setWeightClass(weightClassValue);
         });
         return true;
     }

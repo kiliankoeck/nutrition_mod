@@ -2,10 +2,11 @@ package net.koeck.nutritionmod.events;
 
 import net.koeck.nutritionmod.NutritionMod;
 import net.koeck.nutritionmod.gui.DietGui;
-import net.koeck.nutritionmod.util.KeyBinding;
+import net.koeck.nutritionmod.utility.KeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -22,7 +23,6 @@ public class ClientEvents {
                         () -> () -> Minecraft.getInstance().setScreen(new DietGui()));
             }
         }
-
     }
 
     @Mod.EventBusSubscriber(modid = NutritionMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -32,5 +32,8 @@ public class ClientEvents {
             event.register(KeyBinding.GUI_KEY);
         }
 
+        @SubscribeEvent
+        public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        }
     }
 }

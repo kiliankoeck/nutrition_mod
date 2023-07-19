@@ -5,10 +5,22 @@
   "dailyPortionAmt": 1,
   "dailyPortionBoundary": "UPPER",
   "foods": {
-    "minecraft:cake":  [323.0, 1000.0],
-    "minecraft:honey_bottle" : [314.0, 7.0],
-    "minecraft:cookie":  [487.0, 16.0],
-    "minecraft:pumpkin_pie": [210.0, 130.0]
+    "minecraft:cake": [
+      323.0,
+      1000.0
+    ],
+    "minecraft:honey_bottle": [
+      314.0,
+      7.0
+    ],
+    "minecraft:cookie": [
+      487.0,
+      16.0
+    ],
+    "minecraft:pumpkin_pie": [
+      210.0,
+      130.0
+    ]
   },
   "effects": [
     "",
