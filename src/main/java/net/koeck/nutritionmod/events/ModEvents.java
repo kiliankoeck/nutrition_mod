@@ -43,21 +43,41 @@ public class ModEvents {
     @Mod.EventBusSubscriber(modid = NutritionMod.MOD_ID)
     public static class ClientForgeEvents {
 
-
+/*
         @SubscribeEvent
         public static void OnRightClickItem(PlayerInteractEvent.RightClickItem event) {
 
-            if (!event.getItemStack().isEdible()) {
-                return;
-            }
+            ItemStack itemStack = event.getEntity().getItemInHand(event.getEntity().getUsedItemHand());
 
-            for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
-                if (item.getDescriptionId().equals(event.getItemStack().getDescriptionId())) {
-                    return;
+            if (!itemStack.getDescriptionId().equals(Items.POTATO.getDescriptionId())) {
+                for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
+                    System.out.println(item.getDisplayName());
+                    if (item.getDescriptionId().equals(itemStack.getDescriptionId())) {
+                        return;
+                    }
                 }
             }
 
             event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setResult(Event.Result.DENY);
+            event.setCanceled(true);
+        }
+
+ */
+
+        @SubscribeEvent
+        public static void OnStartEatFood(LivingEntityUseItemEvent.Start event) {
+
+            ItemStack itemStack = event.getEntity().getItemInHand(event.getEntity().getUsedItemHand());
+
+            if (!itemStack.getDescriptionId().equals(Items.POTATO.getDescriptionId())) {
+                for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
+                    if (item.getDescriptionId().equals(itemStack.getDescriptionId())) {
+                        return;
+                    }
+                }
+            }
+
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
         }
