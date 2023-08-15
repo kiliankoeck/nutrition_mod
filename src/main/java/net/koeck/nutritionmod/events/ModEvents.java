@@ -6,6 +6,7 @@ import net.koeck.nutritionmod.capabilities.PlayerDietProvider;
 import net.koeck.nutritionmod.diet.DietEffect;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroup;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroupList;
+import net.koeck.nutritionmod.effect.ModEffects;
 import net.koeck.nutritionmod.item.ModItems;
 import net.koeck.nutritionmod.networking.ModMessages;
 import net.koeck.nutritionmod.networking.NetworkingUtils;
@@ -17,12 +18,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -41,42 +44,55 @@ import java.util.List;
 public class ModEvents {
 
     @Mod.EventBusSubscriber(modid = NutritionMod.MOD_ID)
-    public static class ClientForgeEvents {
+    public static class ForgeEvents {
 
-/*
+
         @SubscribeEvent
         public static void OnRightClickItem(PlayerInteractEvent.RightClickItem event) {
+            ItemStack itemStack = event.getItemStack();
 
-            ItemStack itemStack = event.getEntity().getItemInHand(event.getEntity().getUsedItemHand());
-
-            if (!itemStack.getDescriptionId().equals(Items.POTATO.getDescriptionId())) {
+            if (itemStack.isEdible()) {
                 for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
-                    System.out.println(item.getDisplayName());
                     if (item.getDescriptionId().equals(itemStack.getDescriptionId())) {
+                        Player player = event.getEntity();
+                        if (player.getFoodData().getFoodLevel() == 20) {
+                            player.getFoodData().setFoodLevel(19);
+                            player.getCapability(PlayerDietProvider.PLAYER_DIET).ifPresent((diet) -> {
+                                diet.setOvereating(true);
+                            });
+                        }
                         return;
                     }
                 }
             }
-
-            event.setCancellationResult(InteractionResult.SUCCESS);
-            event.setResult(Event.Result.DENY);
-            event.setCanceled(true);
         }
 
- */
+        @SubscribeEvent
+        public static void OnStopEatFood(LivingEntityUseItemEvent.Stop event) {
+            LivingEntity entity = event.getEntity();
+            if(entity instanceof Player player) {
+                player.getCapability(PlayerDietProvider.PLAYER_DIET).ifPresent(diet -> {
+                    if (diet.isOvereating()) {
+                        player.getFoodData().setFoodLevel(20);
+                        diet.setOvereating(false);
+                    }
+                });
+            }
+        }
 
         @SubscribeEvent
         public static void OnStartEatFood(LivingEntityUseItemEvent.Start event) {
 
             ItemStack itemStack = event.getEntity().getItemInHand(event.getEntity().getUsedItemHand());
-
-            if (!itemStack.getDescriptionId().equals(Items.POTATO.getDescriptionId())) {
-                for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
-                    if (item.getDescriptionId().equals(itemStack.getDescriptionId())) {
+            for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
+                    if (item.getDescriptionId().equals(itemStack.getDescriptionId()) || itemStack.getDescriptionId().contains("item.minecraft.potion")) {
+                        Player player = (Player) event.getEntity();
+                        if (player.getFoodData().getFoodLevel() == 20) {
+                            player.getFoodData().setFoodLevel(19);
+                        }
                         return;
                     }
                 }
-            }
 
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
@@ -161,7 +177,7 @@ public class ModEvents {
 
                     playerDiet.addFoodGroup(foodGroup, 1);
                     playerDiet.addConsumedCalories(cakeCalories / 7);
-
+                    player.addEffect(new MobEffectInstance(ModEffects.SUGAR_RUSH.get(), 1200));
                     ModMessages.sendToPlayer(new ExtrasDataSyncS2CPacket(playerDiet.getFoodGroup(foodGroup)), (ServerPlayer) player);
                     ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(playerDiet.getConsumedCalories()), (ServerPlayer) player);
 
@@ -171,20 +187,18 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void OnDayEnd(TickEvent.PlayerTickEvent event) {
-            if (event.side.isServer() && event.phase == TickEvent.Phase.END) {
-                int gameTime = (int) event.player.getLevel().getDayTime();
-                if (gameTime % 24000 == 0) {
-                    event.player.getCapability(PlayerDietProvider.PLAYER_DIET).ifPresent(playerDiet -> {
-                        int weightClass = playerDiet.addWeightClassFromCalories();
-                        DietEffect.applyDietEffects(playerDiet.getFoodGroup(), event.player, weightClass);
-                        playerDiet.reset();
-                        for (FoodGroup foodGroup : playerDiet.getConsumedFoodGroups().keySet()) {
-                            NetworkingUtils.sendS2CPackage(foodGroup, 0, (ServerPlayer) event.player);
-                        }
-                        ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(0), (ServerPlayer) event.player);
-                        ModMessages.sendToPlayer(new WeightClassDataSyncS2CPacket(weightClass), (ServerPlayer) event.player);
-                    });
-                }
+
+            if (event.side.isServer() && event.phase == TickEvent.Phase.END && event.player.getLevel().getDayTime() % 24010 == 0) {
+                event.player.getCapability(PlayerDietProvider.PLAYER_DIET).ifPresent(playerDiet -> {
+                    int weightClass = playerDiet.addWeightClassFromCalories();
+                    DietEffect.applyDietEffects(playerDiet.getFoodGroup(), event.player, weightClass);
+                    playerDiet.reset();
+                    for (FoodGroup foodGroup : playerDiet.getConsumedFoodGroups().keySet()) {
+                        NetworkingUtils.sendS2CPackage(foodGroup, 0, (ServerPlayer) event.player);
+                    }
+                    ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(0), (ServerPlayer) event.player);
+                    ModMessages.sendToPlayer(new WeightClassDataSyncS2CPacket(weightClass), (ServerPlayer) event.player);
+                });
             }
         }
 
@@ -203,21 +217,28 @@ public class ModEvents {
         }
 
         @SubscribeEvent
-        public static void OnEndEatFood(LivingEntityUseItemEvent.Finish event) {
+        public static void OnFinishEatFood(LivingEntityUseItemEvent.Finish event) {
             if (!(event.getEntity() instanceof Player player) || event.getEntity().level.isClientSide()) {
                 return;
             }
 
             player.getCapability(PlayerDietProvider.PLAYER_DIET).ifPresent(playerDiet -> {
 
+                playerDiet.setOvereating(false);
                 ItemStack item = event.getItem();
                 List<FoodGroup> foodGroupList = FoodGroupList.getConsumedFoodGroups(item);
+
                 double calories = FoodGroupList.getFoodCalories(item);
 
                 playerDiet.addFoodGroup(foodGroupList, 1);
                 playerDiet.addConsumedCalories(calories);
 
                 for (FoodGroup foodGroup : foodGroupList) {
+                    if(foodGroup.name.equals("protein")) {
+                        player.addEffect(new MobEffectInstance(ModEffects.PROTEIN_SURGE.get(), 1200));
+                    } else if(foodGroup.name.equals("extras")) {
+                        player.addEffect(new MobEffectInstance(ModEffects.SUGAR_RUSH.get(), 1200));
+                    }
                     NetworkingUtils.sendS2CPackage(foodGroup, playerDiet.getFoodGroup(foodGroup), (ServerPlayer) player);
                     ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(playerDiet.getConsumedCalories()), (ServerPlayer) player);
                 }

@@ -26,6 +26,7 @@ public class DietGui extends Screen {
 
 
         Map<FoodGroup, Integer> consumedFoodGroups = ClientDietData.getConsumedFoodGroups();
+
         if (consumedFoodGroups != null) {
             int y = 20;
             for (FoodGroup foodGroup : consumedFoodGroups.keySet()) {
@@ -45,6 +46,8 @@ public class DietGui extends Screen {
 
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
+                font.drawShadow(poseStack, String.format("%s", foodGroup.name), 10, y, Color.WHITE.getRGB());
+                y += 10;
                 fill(poseStack, 10, y, 10 + 16, y + 16, Color.LIGHT_GRAY.getRGB());
                 itemRenderer.renderGuiItem(poseStack, icon, 10, y);
                 String boundary = dailyPortionBoundary == Boundary.UPPER ? "<=" : dailyPortionBoundary == Boundary.LOWER ? ">=" : "";
@@ -57,10 +60,6 @@ public class DietGui extends Screen {
             if (consumedCalories != null) {
                 font.drawShadow(poseStack, String.format("%s: %.2fkcal", "consumed calories", consumedCalories), 30, y + 6, Color.CYAN.getRGB());
             }
-            y += 20;
-            int weightClass = ClientDietData.getWeightClass();
-            font.drawShadow(poseStack, String.format("%s: %d", "weight class", weightClass), 30, y + 6, Color.CYAN.getRGB());
-
         }
     }
 }

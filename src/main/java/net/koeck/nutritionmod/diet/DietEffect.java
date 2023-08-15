@@ -5,6 +5,7 @@ import net.koeck.nutritionmod.diet.foodgroups.FoodGroupList;
 import net.koeck.nutritionmod.effect.ModEffects;
 import net.koeck.nutritionmod.networking.ModMessages;
 import net.koeck.nutritionmod.networking.packet.HealthBarSyncS2CPacket;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,12 +34,18 @@ public class DietEffect {
             int intakeValue = checkIntakeAmount(foodGroup, foodGroupIntake.get(foodGroup));
             if (intakeValue == 2) {
                 optimalAmtReached++;
+            } else if (intakeValue == 1) {
+                player.sendSystemMessage(Component.literal("Try consuming less " + foodGroup.name + "!"));
+            } else if (intakeValue == 0) {
+                player.sendSystemMessage(Component.literal("You should consume more " + foodGroup.name + "!"));
+
             }
 
             matchEffect(foodGroup.effects[intakeValue], player);
         }
 
         if (optimalAmtReached == FoodGroupList.size()) {
+            player.sendSystemMessage(Component.literal("You followed the recommendations. Well Done!"));
             //Strength
             MobEffectInstance strength = new MobEffectInstance(Objects.requireNonNull(MobEffect.byId(5)), 24000, 0, true, false);
             strength.setCurativeItems(new ArrayList<ItemStack>());

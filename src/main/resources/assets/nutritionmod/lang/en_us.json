@@ -5,5 +5,7 @@
   "effect.nutritionmod.overweight": "Overweight",
   "effect.nutritionmod.obesity_one": "Obesity I",
   "effect.nutritionmod.obesity_two": "Obesity II",
-  "effect.nutritionmod.obesity_three": "Obesity III"
+  "effect.nutritionmod.obesity_three": "Obesity III",
+  "effect.nutritionmod.protein_surge": "Protein Surge",
+  "effect.nutritionmod.sugar_rush": "Sugar Rush"
 }

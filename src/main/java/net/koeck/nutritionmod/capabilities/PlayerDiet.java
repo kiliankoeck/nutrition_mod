@@ -13,6 +13,16 @@ public class PlayerDiet {
     private Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
     private Double consumedCalories = 0D;
 
+    public boolean isOvereating() {
+        return isOvereating;
+    }
+
+    public void setOvereating(boolean overeating) {
+        isOvereating = overeating;
+    }
+
+    private boolean isOvereating = false;
+
     //weight classes 1-12
     private int weightClass = 0;
 
