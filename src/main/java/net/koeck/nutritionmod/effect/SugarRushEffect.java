@@ -23,7 +23,7 @@ public class SugarRushEffect extends MobEffect {
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
-        pLivingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("speed_up", 0.4, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        pLivingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("speed_up", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL));
         super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
     }
 }

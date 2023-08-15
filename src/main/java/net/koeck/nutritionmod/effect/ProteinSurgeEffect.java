@@ -23,7 +23,7 @@ public class ProteinSurgeEffect extends MobEffect {
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
-        pLivingEntity.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier("attack_damage_up", 0.4, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        pLivingEntity.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier("attack_damage_up", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL));
         super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
     }
 }

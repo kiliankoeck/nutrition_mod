@@ -23,7 +23,7 @@ public class ObesityOneEffect extends MobEffect {
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
-        pLivingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("speed_down", -0.2, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        pLivingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("speed_down", -0.3, AttributeModifier.Operation.MULTIPLY_TOTAL));
         super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
     }
 }
