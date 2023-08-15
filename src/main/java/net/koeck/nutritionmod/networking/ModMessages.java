@@ -71,11 +71,6 @@ public class ModMessages {
                 .consumerMainThread(VegetablesFruitDataSyncS2CPacket::handle)
                 .add();
 
-        net.messageBuilder(HealthBarSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(HealthBarSyncS2CPacket::new)
-                .encoder(HealthBarSyncS2CPacket::toBytes)
-                .consumerMainThread(HealthBarSyncS2CPacket::handle)
-                .add();
 
         net.messageBuilder(CalorieDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(CalorieDataSyncS2CPacket::new)

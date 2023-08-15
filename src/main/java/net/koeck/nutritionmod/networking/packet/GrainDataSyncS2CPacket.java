@@ -26,7 +26,7 @@ public class GrainDataSyncS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ClientDietData.setFoodGroup(FoodGroupList.getByName("grain"), grainValue);
+            ClientDietData.setFoodGroup(FoodGroupList.getByName("grain and sides"), grainValue);
 
         });
         return true;

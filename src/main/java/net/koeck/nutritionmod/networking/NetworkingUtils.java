@@ -20,7 +20,7 @@ public class NetworkingUtils {
             case "fat and oils":
                 ModMessages.sendToPlayer(new FatOilDataSyncS2CPacket(value), player);
                 break;
-            case "grain":
+            case "grain and sides":
                 ModMessages.sendToPlayer(new GrainDataSyncS2CPacket(value), player);
                 break;
             case "protein":

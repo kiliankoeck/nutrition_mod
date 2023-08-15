@@ -3,10 +3,7 @@ package net.koeck.nutritionmod.diet;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroup;
 import net.koeck.nutritionmod.diet.foodgroups.FoodGroupList;
 import net.koeck.nutritionmod.effect.ModEffects;
-import net.koeck.nutritionmod.networking.ModMessages;
-import net.koeck.nutritionmod.networking.packet.HealthBarSyncS2CPacket;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -114,7 +111,6 @@ public class DietEffect {
         double random = Math.random();
         if (random <= 0.4 && player.getMaxHealth() < 30) {
             Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_up", 0.5D, AttributeModifier.Operation.ADDITION));
-            ModMessages.sendToPlayer(new HealthBarSyncS2CPacket(player.getMaxHealth()), (ServerPlayer) player);
         }
     }
 
@@ -122,7 +118,6 @@ public class DietEffect {
         double random = Math.random();
         if (random <= 0.4 && player.getMaxHealth() > 10) {
             Objects.requireNonNull(player.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("health_down", -1.0D, AttributeModifier.Operation.ADDITION));
-            ModMessages.sendToPlayer(new HealthBarSyncS2CPacket(player.getMaxHealth()), (ServerPlayer) player);
         }
     }
 

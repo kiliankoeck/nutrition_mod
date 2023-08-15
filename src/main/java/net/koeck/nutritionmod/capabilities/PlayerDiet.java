@@ -57,9 +57,9 @@ public class PlayerDiet {
         }
         //Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1467-789X.2006.00249.x
         double tee = 64 - 9.72 * 20 + 1.54 * (14.2 * weightEstimate + 503 * 1.75);
-        if (consumedCalories > 1.2 * tee) {
+        if (consumedCalories > tee) {
             changeWeightClass(1);
-        } else if (consumedCalories < 0.8 * tee) {
+        } else if (consumedCalories < 0.5 * tee) {
             changeWeightClass(-1);
         }
         return weightClass;

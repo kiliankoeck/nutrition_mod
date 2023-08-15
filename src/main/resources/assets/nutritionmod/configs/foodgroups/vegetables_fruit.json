@@ -5,14 +5,14 @@
   "dailyPortionAmt": 5,
   "dailyPortionBoundary": "EQUAL",
   "foods": {
-    "minecraft:sweet_berries": [68.5, 80.0],
-    "minecraft:beetroot": [43.0, 110.0],
-    "minecraft:beetroot_soup": [43.0, 250.0],
-    "minecraft:carrot": [40.0, 93.0],
-    "minecraft:mushroom_stew": [56.0, 250.0],
-    "minecraft:apple": [52.0, 100.0],
-    "minecraft:melon_slice": [30.0, 90.0],
-    "minecraft:dried_kelp": [200.0, 28.0]
+    "minecraft:sweet_berries": [68.5, 150.0],
+    "minecraft:beetroot": [43.0, 150.0],
+    "minecraft:beetroot_soup": [43.0, 300.0],
+    "minecraft:carrot": [40.0, 150.0],
+    "minecraft:mushroom_stew": [56.0, 300.0],
+    "minecraft:apple": [52.0, 150.0],
+    "minecraft:melon_slice": [30.0, 150.0],
+    "minecraft:dried_kelp": [200.0, 50.0]
   },
   "effects": [
     "",

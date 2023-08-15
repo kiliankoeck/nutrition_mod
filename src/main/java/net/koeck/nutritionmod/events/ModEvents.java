@@ -85,8 +85,7 @@ public class ModEvents {
 
             ItemStack itemStack = event.getEntity().getItemInHand(event.getEntity().getUsedItemHand());
             for (ItemStack item : FoodGroupList.getAllAllowedFoods()) {
-                    if (item.getDescriptionId().equals(itemStack.getDescriptionId()) || itemStack.getDescriptionId().contains("item.minecraft.potion")) {
-                        Player player = (Player) event.getEntity();
+                    if (event.getEntity() instanceof Player player && (item.getDescriptionId().equals(itemStack.getDescriptionId()) || itemStack.getDescriptionId().contains("item.minecraft.potion"))) {
                         if (player.getFoodData().getFoodLevel() == 20) {
                             player.getFoodData().setFoodLevel(19);
                         }
@@ -94,8 +93,10 @@ public class ModEvents {
                     }
                 }
 
-            event.setResult(Event.Result.DENY);
-            event.setCanceled(true);
+            if (itemStack.isEdible()) {
+                event.setResult(Event.Result.DENY);
+                event.setCanceled(true);
+            }
         }
 
         @SubscribeEvent

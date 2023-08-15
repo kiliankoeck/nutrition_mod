@@ -29,7 +29,6 @@ displayName="Nutrition Mod" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
-credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
 authors="Kilian Köck" #optional
 # Display Test controls the display for your mod in the server connection screen
@@ -42,11 +41,9 @@ authors="Kilian Köck" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-This is a long form description of the mod. You can write whatever you want here
+This mod attempts to make nutrition and diet in Minecraft more realistic. The concept of this mod was developed with the intention of creating a serious game for behavior change and to serve as an intervention method for obesity.
 
-Have some lorem ipsum.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed sagittis luctus odio eu tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque volutpat ligula eget lacus auctor sagittis. In hac habitasse platea dictumst. Nunc gravida elit vitae sem vehicula efficitur. Donec mattis ipsum et arcu lobortis, eleifend sagittis sem rutrum. Cras pharetra quam eget posuere fermentum. Sed id tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Players have to keep in mind both quality and quantity of the foods they consume each day. Foods in this mod have a caloric value assigned. If a Player consumes too many calories, they will gain weight, becoming increasingly slower as a result. Players also have to watch the amount of food they eat categorizied by the german food pyramid. Over-/underconsumption of some food categories might lead to negative effects. However, adequate intake of food froups grants the player various beneficial effects.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.nutritionmod]] #optional

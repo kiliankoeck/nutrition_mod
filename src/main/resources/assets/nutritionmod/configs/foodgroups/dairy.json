@@ -5,7 +5,7 @@
   "dailyPortionAmt": 3,
   "dailyPortionBoundary": "EQUAL",
   "foods": {
-    "minecraft:milk_bucket": [60.0, 250.0]
+    "minecraft:milk_bucket": [60.0, 300.0]
   },
   "effects": [
     "",

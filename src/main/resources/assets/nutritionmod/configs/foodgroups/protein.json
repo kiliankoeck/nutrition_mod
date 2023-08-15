@@ -5,14 +5,14 @@
   "dailyPortionAmt": 1,
   "dailyPortionBoundary": "UPPER",
   "foods": {
-    "minecraft:cooked_beef": [306.0, 200],
-    "minecraft:cooked_chicken": [204.0, 200],
-    "minecraft:cooked_salmon": [206.0, 150],
-    "minecraft:cooked_cod": [105.0, 150],
-    "minecraft:cooked_mutton": [309.0, 200],
-    "minecraft:cooked_porkchop": [265.0, 200],
-    "minecraft:cooked_rabbit": [197.0, 200],
-    "minecraft:rabbit_stew": [121.0, 150]
+    "minecraft:cooked_beef": [306.0, 300],
+    "minecraft:cooked_chicken": [204.0, 300],
+    "minecraft:cooked_salmon": [206.0, 300],
+    "minecraft:cooked_cod": [105.0, 300],
+    "minecraft:cooked_mutton": [309.0, 300],
+    "minecraft:cooked_porkchop": [265.0, 300],
+    "minecraft:cooked_rabbit": [197.0, 300],
+    "minecraft:rabbit_stew": [121.0, 300]
   },
   "effects": [
     "",

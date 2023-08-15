@@ -1,12 +1,12 @@
 {
-  "name": "grain & sides",
+  "name": "grain and sides",
   "icon": "minecraft:wheat",
   "color": "fad587",
   "dailyPortionAmt": 4,
   "dailyPortionBoundary": "EQUAL",
   "foods": {
-    "minecraft:baked_potato": [93.0, 173.0] ,
-    "minecraft:bread": [245.0, 38.0]
+    "minecraft:baked_potato": [93.0, 150.0] ,
+    "minecraft:bread": [245.0, 100.0]
   },
   "effects": [
     "",

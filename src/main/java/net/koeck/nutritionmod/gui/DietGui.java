@@ -26,10 +26,10 @@ public class DietGui extends Screen {
 
 
         Map<FoodGroup, Integer> consumedFoodGroups = ClientDietData.getConsumedFoodGroups();
-
         if (consumedFoodGroups != null) {
             int y = 20;
             for (FoodGroup foodGroup : consumedFoodGroups.keySet()) {
+                System.out.println(foodGroup.name);
                 ItemStack icon = foodGroup.icon;
                 int consumedAmount = consumedFoodGroups.get(foodGroup);
                 int dailyPortionAmt = foodGroup.dailyPortionAmt;
@@ -55,11 +55,35 @@ public class DietGui extends Screen {
 
                 y += 20;
             }
-            y += 20;
+
+            y = 20;
             Double consumedCalories = ClientDietData.getConsumedCalories();
             if (consumedCalories != null) {
-                font.drawShadow(poseStack, String.format("%s: %.2fkcal", "consumed calories", consumedCalories), 30, y + 6, Color.CYAN.getRGB());
+                font.drawShadow(poseStack, String.format("%s: %.2fkcal", "consumed calories", consumedCalories), 240, y + 6, Color.CYAN.getRGB());
             }
+
+
+
+            y += 20;
+            int weightClass = ClientDietData.getWeightClass();
+            font.drawShadow(poseStack, String.format("%s: %d", "weight class", weightClass), 240, y + 6, Color.CYAN.getRGB());
+
+            int weightEstimate = 61;
+            if (weightClass > 13) {
+                weightEstimate = 122;
+            } else if (weightClass > 10) {
+                weightEstimate = 107;
+            } else if (weightClass > 7) {
+                weightEstimate = 92;
+            } else if (weightClass > 4) {
+                weightEstimate = 77;
+            }
+            //Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1467-789X.2006.00249.x
+            double tee = 64 - 9.72 * 20 + 1.54 * (14.2 * weightEstimate + 503 * 1.75);
+
+            y += 20;
+            font.drawShadow(poseStack, String.format("%s: %f", "TEE", tee), 240, y + 6, Color.CYAN.getRGB());
+
         }
     }
 }
