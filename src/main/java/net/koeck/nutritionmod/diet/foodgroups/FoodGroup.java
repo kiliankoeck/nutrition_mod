@@ -7,8 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: foods to multiple food groups?
-//TODO: change fat boundary to EQUAL
+
 //Food Group object representing a certain food group
 public class FoodGroup {
     public String name;

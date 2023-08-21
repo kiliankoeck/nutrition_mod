@@ -15,8 +15,7 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> OBESITY_ONE = MOB_EFFECTS.register("obesity_one", () -> new ObesityOneEffect(MobEffectCategory.HARMFUL, 0x00FFFFFF));
     public static final RegistryObject<MobEffect> OBESITY_TWO = MOB_EFFECTS.register("obesity_two", () -> new ObesityTwoEffect(MobEffectCategory.HARMFUL, 0x00FFFFFF));
     public static final RegistryObject<MobEffect> OBESITY_THREE = MOB_EFFECTS.register("obesity_three", () -> new ObesityThreeEffect(MobEffectCategory.HARMFUL, 0x00FFFFFF));
-    public static final RegistryObject<MobEffect> PROTEIN_SURGE = MOB_EFFECTS.register("protein_surge", () -> new ProteinSurgeEffect(MobEffectCategory.BENEFICIAL, 0x673728));
-    public static final RegistryObject<MobEffect> SUGAR_RUSH = MOB_EFFECTS.register("sugar_rush", () -> new SugarRushEffect(MobEffectCategory.BENEFICIAL, 0x00FFFFFF));
+    public static final RegistryObject<MobEffect> VEGGIE_AND_FRUIT_RUSH = MOB_EFFECTS.register("veggie_and_fruit_rush", () -> new VeggieAndFruitRushEffect(MobEffectCategory.BENEFICIAL, 0x00FFFFFF));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

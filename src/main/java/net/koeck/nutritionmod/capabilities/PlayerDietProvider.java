@@ -34,6 +34,16 @@ public class PlayerDietProvider implements ICapabilityProvider, INBTSerializable
         return LazyOptional.empty();
     }
 
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        if(cap == PLAYER_DIET)
+            return optional.cast();
+        else
+            return LazyOptional.empty();
+    }
+
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();

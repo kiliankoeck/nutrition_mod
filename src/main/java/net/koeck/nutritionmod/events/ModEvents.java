@@ -28,11 +28,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,8 +42,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Map;
 
 public class ModEvents {
+
+    private static final String  FIRST_JOIN_FLAG = NutritionMod.MOD_ID + ":first_join";
 
     @Mod.EventBusSubscriber(modid = NutritionMod.MOD_ID)
     public static class ForgeEvents {
@@ -102,8 +107,8 @@ public class ModEvents {
         @SubscribeEvent
         public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
             if (!event.getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-                if (!player.getPersistentData().contains(NutritionMod.MOD_ID + ":first_join")) {
-                    player.getPersistentData().putBoolean(NutritionMod.MOD_ID + ":first_join", true);
+                if (!player.getPersistentData().contains(FIRST_JOIN_FLAG)) {
+                    player.getPersistentData().putBoolean(FIRST_JOIN_FLAG, true);
 
                     if (!player.isCreative()) {
                         Inventory inventory = player.getInventory();
@@ -178,7 +183,7 @@ public class ModEvents {
 
                     playerDiet.addFoodGroup(foodGroup, 1);
                     playerDiet.addConsumedCalories(cakeCalories / 7);
-                    player.addEffect(new MobEffectInstance(ModEffects.SUGAR_RUSH.get(), 1200));
+
                     ModMessages.sendToPlayer(new ExtrasDataSyncS2CPacket(playerDiet.getFoodGroup(foodGroup)), (ServerPlayer) player);
                     ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(playerDiet.getConsumedCalories()), (ServerPlayer) player);
 
@@ -214,7 +219,25 @@ public class ModEvents {
                     }
                 }
             }
+        }
 
+        @SubscribeEvent
+        public static void onRespawn(PlayerEvent.Clone event) {
+            if(event.getOriginal().level.isClientSide)
+                return;
+
+            if(event.isWasDeath()) {
+                Player originalPlayer = event.getOriginal();
+                Player newPlayer = event.getEntity();
+                newPlayer.getPersistentData().putBoolean(FIRST_JOIN_FLAG, originalPlayer.getPersistentData().getBoolean(FIRST_JOIN_FLAG));
+
+                originalPlayer.reviveCaps();
+                LazyOptional<PlayerDiet> loNewCap = newPlayer.getCapability(PlayerDietProvider.PLAYER_DIET);
+                LazyOptional<PlayerDiet> loOldCap = originalPlayer.getCapability(PlayerDietProvider.PLAYER_DIET);
+                loNewCap.ifPresent( newCap -> {
+                    loOldCap.ifPresent(newCap::copyDiet);
+                });
+            }
         }
 
         @SubscribeEvent
@@ -234,11 +257,11 @@ public class ModEvents {
                 playerDiet.addFoodGroup(foodGroupList, 1);
                 playerDiet.addConsumedCalories(calories);
 
+
                 for (FoodGroup foodGroup : foodGroupList) {
-                    if(foodGroup.name.equals("protein")) {
-                        player.addEffect(new MobEffectInstance(ModEffects.PROTEIN_SURGE.get(), 1200));
-                    } else if(foodGroup.name.equals("extras")) {
-                        player.addEffect(new MobEffectInstance(ModEffects.SUGAR_RUSH.get(), 1200));
+                    Map<FoodGroup, Integer> consumedFoodGroups = playerDiet.getConsumedFoodGroups();
+                    if(foodGroup.name.equals("vegetables and fruit") && consumedFoodGroups.get(foodGroup) == foodGroup.dailyPortionAmt) {
+                        player.addEffect(new MobEffectInstance(ModEffects.VEGGIE_AND_FRUIT_RUSH.get(), 6000));
                     }
                     NetworkingUtils.sendS2CPackage(foodGroup, playerDiet.getFoodGroup(foodGroup), (ServerPlayer) player);
                     ModMessages.sendToPlayer(new CalorieDataSyncS2CPacket(playerDiet.getConsumedCalories()), (ServerPlayer) player);

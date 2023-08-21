@@ -3,7 +3,7 @@
   "icon": "nutritionmod:pecan",
   "color": "ffffff",
   "dailyPortionAmt": 2,
-  "dailyPortionBoundary": "UPPER",
+  "dailyPortionBoundary": "EQUAL",
   "foods": {
     "nutritionmod:pecan": [
       691.0,

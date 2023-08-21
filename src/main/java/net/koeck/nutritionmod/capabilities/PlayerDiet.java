@@ -12,6 +12,7 @@ public class PlayerDiet {
 
     private Map<FoodGroup, Integer> consumedFoodGroups = new HashMap<>();
     private Double consumedCalories = 0D;
+    private boolean isOvereating = false;
 
     public boolean isOvereating() {
         return isOvereating;
@@ -20,8 +21,6 @@ public class PlayerDiet {
     public void setOvereating(boolean overeating) {
         isOvereating = overeating;
     }
-
-    private boolean isOvereating = false;
 
     //weight classes 1-12
     private int weightClass = 0;
@@ -130,7 +129,7 @@ public class PlayerDiet {
         consumedFoodGroups.clear();
         for (FoodGroup foodGroup : FoodGroupList.get()) {
             for (Map.Entry<FoodGroup, Integer> foodGroupOld : dietOld.entrySet()) {
-                if (foodGroup.name.equals(foodGroupOld.getKey().name)) {
+                if (foodGroup.equals(foodGroupOld.getKey())) {
                     consumedFoodGroups.put(foodGroup, foodGroupOld.getValue());
                     break;
                 }
@@ -154,6 +153,12 @@ public class PlayerDiet {
         }
         consumedCalories = nbt.getDouble("calorie_count");
         weightClass = nbt.getInt("weight_class");
+    }
+
+    public void copyDiet(PlayerDiet diet) {
+        this.consumedCalories = diet.consumedCalories;
+        this.consumedFoodGroups = diet.getConsumedFoodGroups();
+        this.isOvereating = diet.isOvereating();
     }
 
 }
